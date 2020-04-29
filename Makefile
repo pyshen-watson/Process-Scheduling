@@ -1,23 +1,27 @@
-all: scheduler policy
-alld: scheduler
-	gcc FIFO.c mylib.c pcb.c -DSYSCALL_AVAILABLE -o FIFO
-	gcc SJF.c mylib.c pcb.c -DSYSCALL_AVAILABLE -o SJF
-	gcc RR.c mylib.c pcb.c -DSYSCALL_AVAILABLE -o RR
-	gcc PSJF.c mylib.c pcb.c -DSYSCALL_AVAILABLE -o PSJF
-scheduler:
+all:  clean
 	gcc scheduler.c -o scheduler
-policy:
-	gcc FIFO.c mylib.c pcb.c -o FIFO
-	gcc SJF.c mylib.c pcb.c -o SJF
-	gcc RR.c mylib.c pcb.c -o RR
-	gcc PSJF.c mylib.c pcb.c -o PSJF
-debug:
+	gcc ./policy/FIFO.c ./src/mylib.c ./src/pcb.c -o FIFO
+	gcc ./policy/SJF.c ./src/mylib.c ./src/pcb.c -o SJF
+	gcc ./policy/RR.c ./src/mylib.c ./src/pcb.c -o RR
+	gcc ./policy/PSJF.c ./src/mylib.c ./src/pcb.c -o PSJF
+syscall: 
 	gcc scheduler.c -o scheduler
-	gcc FIFO.c mylib.c pcb.c -DDEBUG -o  FIFO
-	gcc SJF.c mylib.c pcb.c -DDEBUG -o SJF
-	gcc RR.c mylib.c pcb.c -DDEBUG -o RR
-	gcc PSJF.c mylib.c pcb.c -DDEBUG -o PSJF
+	gcc ./policy/FIFO.c ./src/mylib.c ./src/pcb.c -DSYSCALL_AVAILABLE -o FIFO
+	gcc ./policy/SJF.c ./src/mylib.c ./src/pcb.c -DSYSCALL_AVAILABLE -o SJF
+	gcc ./policy/RR.c ./src/mylib.c ./src/pcb.c -DSYSCALL_AVAILABLE -o RR
+	gcc ./policy/PSJF.c ./src/mylib.c ./src/pcb.c -DSYSCALL_AVAILABLE -o PSJF
+init: clean clear
 clean:
 	@rm -f  scheduler FIFO SJF RR PSJF a.out
-test:
+clear:
+	@rm -f ./output/*.txt
+test0:
 	./scheduler < ./input/TIME_MEASUREMENT.txt
+test1:
+	./scheduler < ./input/FIFO_1.txt
+test2:
+	./scheduler < ./input/PSJF_2.txt
+test3:
+	./scheduler < ./input/RR_3.txt
+test4:
+	./scheduler < ./input/SJF_4.txt			

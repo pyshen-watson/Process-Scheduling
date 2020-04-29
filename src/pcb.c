@@ -1,5 +1,5 @@
 #define _GNU_SOURCE
-#include "header/pcb.h"
+#include "../header/pcb.h"
 #include <stdio.h>
 PCB *whofirst(PCB *a, PCB *b){
     if(a->runtime < b->runtime)
@@ -15,14 +15,6 @@ PCB *whofirst(PCB *a, PCB *b){
     else
         return b;
  }
-PCB *createPCB(int a, int b, int c, int d){
-    PCB* newnode = (PCB*) malloc(sizeof(PCB));
-    newnode->id = a;
-    newnode->pid = b;
-    newnode->readytime = c;
-    newnode->runtime = d;
-    return newnode;
- }
 void Insert(PCB *heap[], int *entry, PCB *p){
     (*entry)++;
     heap[*entry] = p;
@@ -33,8 +25,7 @@ void Insert(PCB *heap[], int *entry, PCB *p){
         parent = current / 2;
         left = parent * 2;
         right = parent * 2 + 1;
-       
-
+        // right no exists
         if(right == *entry + 1 ){
             winner = whofirst(heap[left], heap[parent]);
             if( winner == heap[left]){
@@ -44,7 +35,7 @@ void Insert(PCB *heap[], int *entry, PCB *p){
             else
                 current = 1;
         }
-
+        // right exists
         else{
             winner = whofirst(heap[left],heap[right]);
             winner = whofirst(winner,heap[parent]);
@@ -59,21 +50,20 @@ void Insert(PCB *heap[], int *entry, PCB *p){
                 SWAP(heap[right],heap[parent]);
                 current = parent;
             }
-        }
+         }
 
-    }
+     }
     
     #ifdef DEBUG
-    printf("Insert => ");
-    for(int i=1;i<=*entry;i++)
-    printf("[P%d %d] ", heap[i]->id, heap[i]->runtime);
-    printf("\n");
+        printf("Insert => ");
+        for(int i=1;i<=*entry;i++)
+        printf("[P%d %d] ", heap[i]->id, heap[i]->runtime);
+        printf("\n");
     #endif
     
     return;
  }
 PCB *Extract(PCB *heap[], int *size){
-    /* size = how many elements */
 
     PCB *out = heap[1], *t;
     heap[1] = heap[*size];
@@ -96,7 +86,7 @@ PCB *Extract(PCB *heap[], int *size){
             right = left + 1;
         }
     }
-    
+    // special case
     if(*size==2){
         if(whofirst(heap[1],heap[2])==heap[2]){
             SWAP(heap[1],heap[2]);
@@ -104,10 +94,10 @@ PCB *Extract(PCB *heap[], int *size){
     }
 
     #ifdef DEBUG
-    printf("Extract => ");
-    for(int i=1;i<=*size;i++)
-        printf("[P%d %d] ", heap[i]->id, heap[i]->runtime);
-    printf("\n");
+        printf("Extract => ");
+        for(int i=1;i<=*size;i++)
+            printf("[P%d %d] ", heap[i]->id, heap[i]->runtime);
+        printf("\n");
     #endif
 
     return out;

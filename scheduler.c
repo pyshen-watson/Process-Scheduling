@@ -9,7 +9,7 @@ int main(int argc,char *argv[]){
    
     char policy_name[MAX_SCHEDULER_NAME];
     scanf("%s",policy_name);
-    
+    // determine the type
     int policy_type = 0;
     for(int i=0 ; i<= NUMBER_OF_TYPE ; i++ ){
         if(i==NUMBER_OF_TYPE){
@@ -21,23 +21,30 @@ int main(int argc,char *argv[]){
             break;
         }
     }
-
-    // use core 0 for scheduler master
+    
+    // use core 0 for scheduler
     USE_CPU(0);
     fflush(stdin);
 
+    #ifdef FRMGNR
+        char *route[NUMBER_OF_TYPE] = {"../FIFO","../RR","../SJF","../PSJF"};
+    #else
+        char *route[NUMBER_OF_TYPE] = {"./FIFO","./RR","./SJF","./PSJF"};
+    #endif
+    
+    // according the type to branch to each way
     switch(policy_type){
         case FIFO:
-            execl("./FIFO","./FIFO",NULL);
+            execl(route[FIFO], route[FIFO], NULL);
             break;
         case RR:
-            execl("./RR","./RR",NULL);
+            execl(route[RR], route[RR], NULL);
             break;
         case SJF:
-            execl("./SJF","./SJF",NULL);
+            execl(route[SJF], route[SJF], NULL);
             break;
         case PSJF:
-            execl("./PSJF","./PSJF",NULL);
+            execl(route[PSJF], route[PSJF], NULL);
             break;
     }
     return 0;

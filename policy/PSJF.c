@@ -1,12 +1,11 @@
 #define _GNU_SOURCE
 #include <stdio.h>
-#include <sys/types.h>
-#include <unistd.h>
 #include <sched.h>
+#include <unistd.h>
 #include <signal.h>
-#include <assert.h>
-#include "header/mylib.h"
-#include "header/pcb.h"
+#include <sys/types.h>
+#include "../header/pcb.h"
+#include "../header/mylib.h"
 
 int N;
 char ID[MAX_PROCESS_NAME];

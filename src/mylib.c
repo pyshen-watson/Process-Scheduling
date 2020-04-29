@@ -5,8 +5,8 @@
 #include <signal.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-#include "header/mylib.h"
-#include "header/pcb.h"
+#include "../header/mylib.h"
+#include "../header/pcb.h"
 int compare(const void *a, const void *b){
     PCB *x = (PCB*) a;
     PCB *y = (PCB*) b;
@@ -46,17 +46,22 @@ void create_process(void *vpcb, int timeAmount){
         else
             kill(ppid,SIGTERM);
         exit(0);
-    }
+     }
 
     // parent process
     else if (PID > 0) {
         if(pcb->pid == 0)   pcb->pid = PID;
         return;
-    }
+     }
 
     // error case
     else{ 
         fprintf(stderr,"fork() error\n");
         return;
      }
+ }
+int stoi(char *str){
+    char *ptr;
+    ptr = str + 1;
+    return atoi(ptr);
  }

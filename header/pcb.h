@@ -8,12 +8,11 @@ typedef struct{
     long start_time;
     long end_time;
  }PCB;
-#define SWAP(x,y) do{\
-    (t) = (x);\
-    (x) = (y);\
-    (y) = (t);\
+#define SWAP(x,y) do{   \
+    (t) = (x);          \
+    (x) = (y);          \
+    (y) = (t);          \
  }while(0)
-
 
 void Insert(PCB *heap[], int *entry, PCB *p);
 PCB *Extract(PCB *heap[], int *size);
