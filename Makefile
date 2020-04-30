@@ -10,11 +10,8 @@ syscall:
 	gcc ./policy/SJF.c ./src/mylib.c ./src/pcb.c -DSYSCALL_AVAILABLE -o SJF
 	gcc ./policy/RR.c ./src/mylib.c ./src/pcb.c -DSYSCALL_AVAILABLE -o RR
 	gcc ./policy/PSJF.c ./src/mylib.c ./src/pcb.c -DSYSCALL_AVAILABLE -o PSJF
-init: clean clear
 clean:
 	@rm -f  scheduler FIFO SJF RR PSJF a.out
-clear:
-	@rm -f ./output/*.txt
 test0:
 	./scheduler < ./input/TIME_MEASUREMENT.txt
 test1:
