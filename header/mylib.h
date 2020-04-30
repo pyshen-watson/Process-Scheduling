@@ -1,5 +1,5 @@
 // this header define some constant and macro
-#define UNIT_TIME 1e6
+#define UNIT_TIME 1e5
 #define _GNU_SOURCE
 #include <unistd.h>
 #include <stdio.h>
@@ -25,6 +25,8 @@
 #define FALSE              0
 #define TRUE               1
 #define SIGFNS             16
+#define SYS_TIME           548
+#define SYS_PRINTK         549
 
 // input in every policy
 #define INIT_DATA() do {					    \
@@ -55,6 +57,7 @@
     for(int i=0; i<N ; i++)                          \
         printf("P%d %d\n",pcb[i].id, pcb[i].pid);    \
  }while(0)
+
 
 int stoi(char *str);
 void unit_time();

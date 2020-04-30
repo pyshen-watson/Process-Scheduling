@@ -16,19 +16,24 @@ int enable;
 int finish;
 
 void signal_routine(int signo){
+
     if(signo == SIGFNS){
-        enable = TRUE;
-        finish += 1;
-        #ifdef SYSCALL_AVAILABLE
-                runNow -> end_time = syscall(548);
-                syscall(549, runNow->pid, runNow->start_time, runNow->end_time);        
+        
+		#ifdef SYSCALL_AVAILABLE
+            runNow->end_time = syscall(SYS_TIME);
+    		syscall(SYS_PRINTK, runNow->pid, runNow->start_time, runNow->end_time);
         #else
-                runNow -> end_time = (long) time(NULL);
-                fprintf(stderr, "[Project1] %d %ld %ld\n",runNow->pid, runNow->start_time, runNow->end_time);           
-        #endif 
-    }
+    		runNow->end_time = (long) time(NULL);
+			fprintf(stderr, "[Project1] %d %ld %ld\n", runNow->pid, runNow->start_time, runNow->end_time);
+		#endif
+
+		enable = TRUE;
+		finish++;
+	}
+
     else if(signo == SIGTERM)
         enable = TRUE;
+
     return;
  }
 
@@ -39,15 +44,12 @@ int main(int argc,char *argv[]){
     qsort(pcb, N, sizeof(PCB), compare);
     signal(SIGFNS, signal_routine);
     signal(SIGTERM, signal_routine);
-
-   
     int size = 0;
     enable = TRUE;
     int pcbptr = 0;
     int time_slice = 2000;
     PCB* yet = NULL;
   
-    // one round one unit time
     for(int cur=0 ; finish!=N ; cur++){
         
         while(pcbptr < N && pcb[pcbptr].readytime == cur){  
@@ -65,7 +67,6 @@ int main(int argc,char *argv[]){
                 int timeAmount = (runNow->runtime > time_slice) ? time_slice : runNow->runtime;
                 create_process(runNow, timeAmount);
                 runNow->runtime -= timeAmount;
-                //fprintf(stderr,"%d P%d run %d, left %d\n", cur, runNow->id, timeAmount, runNow->runtime);
 
                 if(runNow->runtime != 0){
                     if(size == 0)
@@ -77,7 +78,10 @@ int main(int argc,char *argv[]){
 
         unit_time();
      }
+
     PROCESS_TABLE();
-    
+    syscall(SYS_PRINTK, 0, 0, 0);
+
+
     return 0;
  }
