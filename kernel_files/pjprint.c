@@ -1,9 +1,9 @@
 // syscall #549 
 #include <linux/linkage.h>
 #include <linux/kernel.h>
-#define BASE 1e9
 
 asmlinkage void sys_pjprint(int pid, long start, long end) {
+	const long BASE = 1e9;
 	if(pid==0)
 		printk(KERN_INFO "[RELEASE]");
 	else
